@@ -17,6 +17,7 @@ const app = express()
 
 var currentData = require('../mock/current.json')
 var loginData = require('../mock/login.json')
+var welcomeData = require('../mock/welcome.json')
 var apiRoutes = express.Router()
 app.use('/mock', apiRoutes)
 
@@ -64,6 +65,12 @@ const devWebpackConfig = merge(baseWebpackConfig, {
         res.json({
           resCode: '0',
           data: loginData
+        })
+      })
+      app.get('/mock/welcome', (req, res) => {
+        res.json({
+          resCode: '0',
+          data: welcomeData
         })
       })
     }
