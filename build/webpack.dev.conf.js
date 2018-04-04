@@ -4,20 +4,30 @@ const webpack = require('webpack');
 const config = require('../config');
 const merge = require('webpack-merge');
 const path = require('path');
+const fs = require('fs');
 const baseWebpackConfig = require('./webpack.base.conf');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
 const portfinder = require('portfinder');
 // nodejs开发框架express，用来简化操作
-const express = require('express')
+const express = require('express');
 // 创建node.js的express开发框架的实例
-const app = express()
-// 引用的json地址
+const app = express();
 
-var currentData = require('../mock/current.json');
-var loginData = require('../mock/login.json');
-var welcomeData = require('../mock/welcome.json');
+// 引用的json地址
+var mockData = {};
+var mockFiles = fs.readdirSync(path.resolve(__dirname, '../mock'));
+mockFiles.forEach(function (val) {
+  mockData[val.split('.')[0]] = require('../mock/' + val);
+  // console.log(val.split('.')[0]);
+  // console.log('../mock/' + val);
+  // console.log(mockData[val.split('.')[0]]);
+});
+
+// var currentData = require('../mock/current.json');
+// var loginData = require('../mock/login.json');
+// var welcomeData = require('../mock/welcome.json');
 var apiRoutes = express.Router();
 app.use('/mock', apiRoutes);
 
@@ -55,14 +65,21 @@ const devWebpackConfig = merge(baseWebpackConfig, {
       poll: config.dev.poll,
     },
     before(app) {
+      // Object.keys(mockData).forEach(item => {
+      //   console.log('123' + item);
+      //   app.get('/mock/' + 'item'), (req, res) => {
+      //     res.json(mockData[item]);
+      //     console.log(res.json(mockData[item]));
+      //   }
+      // });
       app.get('/mock/current', (req, res) => {
-        res.json(currentData);
+        res.json(mockData['current']);
       });
       app.get('/mock/login', (req, res) => {
-        res.json(loginData);
+        res.json(mockata['login']);
       });
       app.get('/mock/welcome', (req, res) => {
-        res.json(welcomeData);
+        res.json(mockData['welcome']);
       });
     }
   },
