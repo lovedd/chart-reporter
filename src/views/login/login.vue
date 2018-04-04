@@ -30,16 +30,16 @@ export default {
   data () {
     var validateName = (rule, value, callback) => {
       if (value.trim() === '') {
-        callback(new Error('请输入用户名'))
+        callback(new Error('请输入用户名'));
       } else {
-        callback()
+        callback();
       }
     }
     var validatePass = (rule, value, callback) => {
       if (value === '') {
-        callback(new Error('请输入密码'))
+        callback(new Error('请输入密码'));
       } else {
-        callback()
+        callback();
       }
     }
 
@@ -67,21 +67,21 @@ export default {
             this.loginForm.username,
             this.loginForm.password
           ]
-          console.log('args', args)
+          console.log('args', args);
           this.$store.dispatch('login', args).then(() => {
             if (this.$route.query.redirect) {
-              this.$router.push(this.$route.query.redirect)
+              this.$router.push(this.$route.query.redirect);
             } else {
-              this.$router.push('/')
+              this.$router.push('/');
             }
           }, err => {
-            this.$message.error(err.resMsg)
+            this.$message.error(err.msg);
           })
         }
       })
     },
     handleRegist () {
-      this.$router.push('/regist')
+      this.$router.push('/regist');
     }
   }
 }

@@ -1,28 +1,28 @@
 'use strict'
-const utils = require('./utils')
-const webpack = require('webpack')
-const config = require('../config')
-const merge = require('webpack-merge')
-const path = require('path')
-const baseWebpackConfig = require('./webpack.base.conf')
-const CopyWebpackPlugin = require('copy-webpack-plugin')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
-const portfinder = require('portfinder')
+const utils = require('./utils');
+const webpack = require('webpack');
+const config = require('../config');
+const merge = require('webpack-merge');
+const path = require('path');
+const baseWebpackConfig = require('./webpack.base.conf');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
+const portfinder = require('portfinder');
 // nodejs开发框架express，用来简化操作
 const express = require('express')
 // 创建node.js的express开发框架的实例
 const app = express()
 // 引用的json地址
 
-var currentData = require('../mock/current.json')
-var loginData = require('../mock/login.json')
-var welcomeData = require('../mock/welcome.json')
-var apiRoutes = express.Router()
-app.use('/mock', apiRoutes)
+var currentData = require('../mock/current.json');
+var loginData = require('../mock/login.json');
+var welcomeData = require('../mock/welcome.json');
+var apiRoutes = express.Router();
+app.use('/mock', apiRoutes);
 
 const HOST = process.env.HOST
-const PORT = process.env.PORT && Number(process.env.PORT)
+const PORT = process.env.PORT && Number(process.env.PORT);
 
 const devWebpackConfig = merge(baseWebpackConfig, {
   module: {
@@ -56,23 +56,14 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     },
     before(app) {
       app.get('/mock/current', (req, res) => {
-        res.json({
-          resCode: '0',
-          data: currentData
-        })
-      })
+        res.json(currentData);
+      });
       app.get('/mock/login', (req, res) => {
-        res.json({
-          resCode: '0',
-          data: loginData
-        })
-      })
+        res.json(loginData);
+      });
       app.get('/mock/welcome', (req, res) => {
-        res.json({
-          resCode: '0',
-          data: welcomeData
-        })
-      })
+        res.json(welcomeData);
+      });
     }
   },
   plugins: [
@@ -106,9 +97,9 @@ module.exports = new Promise((resolve, reject) => {
       reject(err)
     } else {
       // publish the new Port, necessary for e2e tests
-      process.env.PORT = port
+      process.env.PORT = port;
       // add port to devServer config
-      devWebpackConfig.devServer.port = port
+      devWebpackConfig.devServer.port = port;
 
       // Add FriendlyErrorsPlugin
       devWebpackConfig.plugins.push(new FriendlyErrorsPlugin({
@@ -120,7 +111,7 @@ module.exports = new Promise((resolve, reject) => {
         : undefined
       }))
 
-      resolve(devWebpackConfig)
+      resolve(devWebpackConfig);
     }
   })
 })

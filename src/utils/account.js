@@ -4,6 +4,6 @@
 import store from '../store'
 
 export function isLogin () {
-  console.log(store.state.account.token)
-  return store.state.account.token
+  console.log('accountToken:' + store.state.account.token);
+  return store.state.account.token;
 }

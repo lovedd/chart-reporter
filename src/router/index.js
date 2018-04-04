@@ -4,7 +4,7 @@ import Welcome from '@/views/welcome/welcome'
 import Home from '@/views/home/home'
 import Current from '@/views/product/current'
 import Login from '@/views/login/login'
-import { isLogin } from 'utils/account'
+import { isLogin } from '../utils/account'
 
 Vue.use(Router)
 
@@ -53,6 +53,7 @@ router.beforeEach((to, from, next) => {
   // 登录权限路由验证
   // debugger;
   if (to.matched.some(record => record.meta.requiresAuth)) {
+    debugger;
     if (isLogin()) {
       next()
     } else {

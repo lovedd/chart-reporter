@@ -6,20 +6,20 @@ var root = ''
 // var axios = require('axios')
 // 自定义判断元素类型JS
 function toType (obj) {
-  return ({}).toString.call(obj).match(/\s([a-zA-Z]+)/)[1].toLowerCase()
+  return ({}).toString.call(obj).match(/\s([a-zA-Z]+)/)[1].toLowerCase();
 }
 // 参数过滤函数
 function filterNull (o) {
   for (var key in o) {
     if (o[key] === null) {
-      delete o[key]
+      delete o[key];
     }
     if (toType(o[key]) === 'string') {
-      o[key] = o[key].trim()
+      o[key] = o[key].trim();
     } else if (toType(o[key]) === 'object') {
-      o[key] = filterNull(o[key])
+      o[key] = filterNull(o[key]);
     } else if (toType(o[key]) === 'array') {
-      o[key] = filterNull(o[key])
+      o[key] = filterNull(o[key]);
     }
   }
   return o
@@ -36,7 +36,7 @@ function filterNull (o) {
 
 function apiAxios (method, url, params, success, failure) {
   if (params) {
-    params = filterNull(params)
+    params = filterNull(params);
   }
   axios({
     method: method,
@@ -47,47 +47,43 @@ function apiAxios (method, url, params, success, failure) {
     withCredentials: false
   })
     .then(function (res) {
-      console.log(res)
-      console.log(res.data.resCode)
-      if (res.data.resCode === '0') {
-        if (res.data.data.status === '99') {
+      console.log('res:', res);
+      if (res.data.status === '0') {
+        if (success) {
+          success(res.data);
+        }
+      } else {
+        if (res.data.status === '99') {
           // 不能用path，否则login只会替代hash最后的一个值,导致404
           router.replace({
             // path: 'login',
             name: '登录页',
             query: {redirect: router.currentRoute.fullPath}
           })
-        } else if (success) {
-          success(res.data)
-        }
-      } else {
-        if (failure) {
-          failure(res.data)
+        } else if (failure) {
+          failure(res.data);
         } else {
-          window.alert('error: ' + JSON.stringify(res.data))
+          window.alert('error: ' + JSON.stringify(res.data));
         }
       }
     })
     .catch(function (err) {
-      let res = err.response
-      if (err) {
-        window.alert('api error, HTTP CODE: ' + res.status)
-      }
-    })
+      window.alert(err.message || '系统错误');
+    });
 }
 
 // 返回在vue模板中的调用接口
 export default {
   get: function (url, params, success, failure) {
-    return apiAxios('GET', url, params, success, failure)
+    return apiAxios('GET', url, params, success, failure);
   },
   post: function (url, params, success, failure) {
-    return apiAxios('POST', url, params, success, failure)
+    return apiAxios('POST', url, params, success, failure);
   },
   put: function (url, params, success, failure) {
-    return apiAxios('PUT', url, params, success, failure)
+    return apiAxios('PUT', url, params, success, failure);
   },
   delete: function (url, params, success, failure) {
-    return apiAxios('DELETE', url, params, success, failure)
+    return apiAxios('DELETE', url, params, success, failure);
   }
 }

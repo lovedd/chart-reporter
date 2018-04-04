@@ -9,14 +9,12 @@ export default{
     }
   },
   created () {
-    this.getWelcomeData()
+    this.getWelcomeData();
   },
   methods: {
     getWelcomeData () {
       this.$api.get('/mock/welcome', null, res => {
-        let data = res.data
-        console.log(res)
-        this.data = data.result
+        this.data = res.result;
       })
     }
   }

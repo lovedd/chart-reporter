@@ -21,15 +21,13 @@ export default {
   methods: {
     getCurrentData () {
       this.$api.get('/mock/current', null, res => {
-        let data = res.data
-        console.log(res)
-        this.data = data.result
+        this.data = res.result;
       })
     },
     // 加载用户来源图
     getUserChartInit () {
       const myChart = echarts.init(document.getElementById('userChart'))
-      myChart.showLoading()
+      myChart.showLoading();
       var option = {
         title: {
           text: '用户来源'
